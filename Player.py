@@ -16,9 +16,6 @@ class Player:
             seconds -= 1
         self.lockdown = False
     def credit(self, amount): # NEVER CALL THIS DIRECTLY. USE transfer()
-        if self.locked:
-            print("Player " + self.name + " is locked!")
-            return
         self.balance += amount
     def debit(self, amount): # NEVER CALL THIS DIRECTLY. USE transfer()
         if self.locked:

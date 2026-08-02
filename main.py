@@ -15,7 +15,7 @@ for i in range(player_count):
     while len(pin) != 4 or pin.isdigit() != True:
         pin = input("Sorry, try again. PIN: ")
     if name != "Bank":
-        players.append(name, STARTING_PRICE, pin)
+        players.append(Player(name, STARTING_PRICE, pin))
 del player_count
 while len(players) > 1:
     for player in players:
@@ -29,16 +29,19 @@ while len(players) > 1:
         You can:
         1. Transfer Money
         2. Reset PIN
-        Choose an option:
-        """
+        Choose an option: """
     ))
     if menu_choice == 1:
         recipient_choice_text = f"""
         What player would you, {selected_player.name}, like to transfer money to?\n
         0. BANK
         """
+        recipient_dict = {}
         for player in players:
-            recipient_choice_text += f"\n{players.index(player)+1}. {player.name}\n"
+            if player.name == selected_player.name:
+                continue
+            recipient_choice_text += f"\n        {players.index(player)+1}. {player.name}\n"
+            recipient_dict[str(players.index(player))] = player.name
         recipient_choice_text += f"\nRecipient (Input Name or Number): "
         recipient = input(recipient_choice_text)
         amount = int(input("How much money would you like to transfer? "))
@@ -46,7 +49,7 @@ while len(players) > 1:
             if int(recipient) == 0:
                 selected_player.transfer(amount, BANK)
             else:
-                selected_player.transfer(amount, recipient)
+                selected_player.transfer(amount, players[names.index(recipient_dict[recipient])])
         else:
             selected_player.transfer(amount, players[names.index(recipient)])
     elif menu_choice == 2:
